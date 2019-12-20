@@ -78,6 +78,8 @@ const database = await RxDB.create({
 
 This adapter uses a [LevelDB C++ binding](https://github.com/Level/leveldown) to store that data on the filesystem. It has the best performance compared to other filesystem adapters. This adapter can **not** be used when multiple nodejs-processes access the same filesystem folders for storage.
 
+Default directories are derived from the "name" property in the form `./mydatabase-rxdb-0-_admin` and `./mydatabase-rxdb-0-_collections` (plus any additional database based on schemas). To set a different location for the database folders the name property must be set with a full path such as: name: `/root/user/project/mydatabase`
+
 ```js
 // npm install leveldown --save
 // npm install pouchdb-adapter-leveldb --save
@@ -85,7 +87,7 @@ RxDB.plugin(require('pouchdb-adapter-leveldb')); // leveldown adapters need the 
 const leveldown = require('leveldown');
 
 const database = await RxDB.create({
-    name: 'mydatabase',
+    name: 'mydatabase', // a default sets of data directories will be created at : ./mydatabase
     adapter: leveldown // the full leveldown-module
 });
 ```
@@ -94,12 +96,14 @@ const database = await RxDB.create({
 
 This adapter uses the [node-websql](https://github.com/nolanlawson/node-websql)-shim to store data on the filesystem. It's advantages are that it does not need a leveldb build and it can be used when multiple nodejs-processes use the same database-files.
 
+Default filesystems data directories are derived from the "name" property. To set a different location for the database folders the name property must be set with a full path such as: name: `/root/user/project/mydatabase`
+
 ```js
 // npm install pouchdb-adapter-node-websql --save
 RxDB.plugin(require('pouchdb-adapter-node-websql'));
 
 const database = await RxDB.create({
-    name: 'mydatabase',
+    name: 'mydatabase', // a default sets of data directories will be created at : ./mydatabase
     adapter: 'websql' // the name of your adapter
 });
 ```
